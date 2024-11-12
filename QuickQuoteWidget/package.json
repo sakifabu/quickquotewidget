@@ -1,0 +1,22 @@
+{
+  "name": "quickquotewidget",
+  "version": "1.0.0",
+  "main": "app.js",
+  "description": "A reusable quick quote iframe widget.",
+  "dependencies": {
+    "jquery": "^3.6.0"
+  },
+  "files": [
+    "app.js",
+    "widgetstyles.css"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [ "widget", "iframe", "jquery", "blazor" ],
+  "author": "Abu Sakif",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^9.13.0"
+  }
+}

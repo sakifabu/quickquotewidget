@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <PropertyGroup>
+    <PackageJsonName Condition="$(PackageJsonName) == ''">quickquotewidget</PackageJsonName>
+    <PackageJsonVersion Condition="$(PackageJsonVersion) == ''">1.0.0</PackageJsonVersion>
+    <PackageJsonMain Condition="$(PackageJsonMain) == ''">app.js</PackageJsonMain>
+    <PackageJsonDescription Condition="$(PackageJsonDescription) == ''">A reusable quick quote iframe widget.</PackageJsonDescription>
+    <PackageJsonDependenciesJquery Condition="$(PackageJsonDependenciesJquery) == ''">^3.6.0</PackageJsonDependenciesJquery>
+    <PackageJsonFiles Condition="$(PackageJsonFiles) == ''">[
+  "app.js",
+  "widgetstyles.css"
+]</PackageJsonFiles>
+    <PackageJsonScriptsTest Condition="$(PackageJsonScriptsTest) == ''">echo "Error: no test specified" &amp;&amp; exit 1</PackageJsonScriptsTest>
+    <PackageJsonKeywords Condition="$(PackageJsonKeywords) == ''">[
+  "widget",
+  "iframe",
+  "jquery",
+  "blazor"
+]</PackageJsonKeywords>
+    <PackageJsonAuthor Condition="$(PackageJsonAuthor) == ''">Abu Sakif</PackageJsonAuthor>
+    <PackageJsonLicense Condition="$(PackageJsonLicense) == ''">ISC</PackageJsonLicense>
+    <PackageJsonDevdependenciesEslint Condition="$(PackageJsonDevdependenciesEslint) == ''">^9.13.0</PackageJsonDevdependenciesEslint>
+  </PropertyGroup>
+</Project>
