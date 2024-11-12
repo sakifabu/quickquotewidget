@@ -73,7 +73,7 @@
                     width: "10px",
                     height: "10px",
                     borderRadius: "50%",
-                    backgroundImage: "url('/ACI-Eagle-Logo-New-Navi.jpeg')",
+                    backgroundImage: "url('https://member.americancollectors.com/assets/images/header-logo.png')",
                     backgroundSize: "cover",
                     backgroundPosition: "center",
                 });
