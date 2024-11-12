@@ -66,12 +66,16 @@
                     width: settings.width,
                     height: settings.height,
                     borderRadius: settings.borderRadius,
+                    backgroundImage: "none"
                 });
             } else {
                 $widget.addClass('minimized').css({
                     width: settings.minimizedSize,
                     height: settings.minimizedSize,
-                    borderRadius: "50%", 
+                    borderRadius: "50%", // Circular shape for minimized chat bubble
+                    backgroundImage: "url('/images/ACI-Eagle-Logo-New-Navi.jpeg')", // Path to the logo image
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
                 });
             }
         });
