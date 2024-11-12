@@ -55,20 +55,26 @@
             flexDirection: 'column',
             alignItems: 'flex-start',
             overflow: 'hidden',
-            transition: `height ${settings.animationDuration}`,
+            transition: `all ${settings.animationDuration}`,
         });
 
-        // Add the form and quote info to the widget
         $widget.append($form).append($quoteInfo);
         $element.append($widget);
 
-        // Double-click to toggle minimize/expand the widget
         $widget.on('dblclick', function () {
             const isMinimized = $widget.hasClass('minimized');
             if (isMinimized) {
-                $widget.removeClass('minimized').css('height', settings.height);
+                $widget.removeClass('minimized').css({
+                    width: settings.width,
+                    height: settings.height,
+                    borderRadius: settings.borderRadius,
+                });
             } else {
-                $widget.addClass('minimized').css('height', settings.minimizedHeight);
+                $widget.addClass('minimized').css({
+                    width: settings.minimizedWidth,
+                    height: settings.minimizedHeight,
+                    borderRadius: "50%", 
+                });
             }
         });
 
