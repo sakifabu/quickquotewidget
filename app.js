@@ -134,29 +134,26 @@
                     body: JSON.stringify(payload)
                 });
 
+                // Log the status and response if not OK
                 if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
+                    console.error("HTTP error:", response.status, response.statusText);
+                    $quoteInfo.html(`Error fetching quote. Status: ${response.status} ${response.statusText}`);
+                    return;
                 }
 
                 const data = await response.json();
-                const fullTermPremium = data.full_term_premium;  // Access the full_term_premium from the response
+                console.log("API Response Data:", data); // Log the full response data
 
-                // Display the full_term_premium in the widget
+                const fullTermPremium = data.full_term_premium; // Access the full_term_premium from the response
+
                 if (fullTermPremium !== undefined) {
                     $quoteInfo.html(`Full Term Premium: $${fullTermPremium.toFixed(2)}`);
-                    const $quoteButton = $('<button>', {
-                        text: 'Get Full Quote',
-                        click: function () {
-                            window.location.href = settings.quotePortalUrl;
-                        }
-                    });
-                    $quoteInfo.append($quoteButton);
                 } else {
                     $quoteInfo.html('Error fetching full term premium.');
                 }
             } catch (error) {
+                console.error("Fetch error:", error); // Log any network or parsing errors
                 $quoteInfo.html('There was an error fetching the quote.');
-                console.error("Fetch error:", error);
             }
         });
     };
