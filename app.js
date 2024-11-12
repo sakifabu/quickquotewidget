@@ -96,28 +96,23 @@
                 "insured": {},
                 "lines": [
                     {
-                        "line_number": 1,
-                        "full_term_premium": 0.0,
                         "line_code": "AUTO",
                         "program_code": "COLLAUTO",
                         "agency": {
-                            "invoice_suspend_method": null,
-                            "send_statement_ind": null,
                             "agency_identifier": "DDAB728D-26B5-4230-812D-F3359ECA17CC"
                         },
                         "carriers": [
                             {
-                                "participation_percentage": 100.0,
-                                "principle_carrier": false,
                                 "code": "AMIG"
                             }
                         ],
                         vehicles: [
                             {
                                 veh_year: formData.vehicleYear,
+                                "veh_type": "Classic/Antique",
                                 veh_make: formData.vehicleMake,
                                 veh_model: formData.vehicleModel,
-                                annual_mileage: formData.annualMileage+" Miles",
+                                annual_mileage: formData.annualMileage,
                             }
                         ]
                     }
