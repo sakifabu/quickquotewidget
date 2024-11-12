@@ -22,28 +22,26 @@
             boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
             zIndex: 1000,
             backgroundColor: "#fff",
-            minimizedHeight: "40px", // Height when minimized
+            minimizedHeight: "40px",
             animationDuration: "0.3s",
         }, options);
 
         const $element = $(selector);
-
         const $widget = $('<div>', { class: 'quickquote-widget' });
 
         // Dynamic Form Inputs
         const $form = $('<form>');
-        const $firstName = $('<input>', { type: 'text', placeholder: 'First Name', name: 'firstName' });
-        const $lastName = $('<input>', { type: 'text', placeholder: 'Last Name', name: 'lastName' });
+        const $state = $('<input>', { type: 'text', placeholder: 'State (e.g., PA)', name: 'state' });
+        const $vehicleYear = $('<input>', { type: 'number', placeholder: 'Vehicle Year', name: 'vehicleYear' });
         const $vehicleMake = $('<input>', { type: 'text', placeholder: 'Vehicle Make', name: 'vehicleMake' });
         const $vehicleModel = $('<input>', { type: 'text', placeholder: 'Vehicle Model', name: 'vehicleModel' });
-        const $statedAmount = $('<input>', { type: 'number', placeholder: 'Stated Amount', name: 'statedAmount' });
         const $annualMileage = $('<input>', { type: 'number', placeholder: 'Annual Mileage', name: 'annualMileage' });
         const $submitBtn = $('<button>', { text: 'Get Quote' });
 
-        $form.append($firstName, $lastName, $vehicleMake, $vehicleModel, $statedAmount, $annualMileage, $submitBtn);
-
+        $form.append($state, $vehicleYear, $vehicleMake, $vehicleModel, $annualMileage, $submitBtn);
         const $quoteInfo = $('<div>', { class: 'quote-info' });
 
+        // Widget Styling
         $widget.css({
             position: settings.position,
             bottom: settings.bottom,
@@ -64,7 +62,7 @@
         $widget.append($form).append($quoteInfo);
         $element.append($widget);
 
-        // Double-click event to toggle minimize/expand the widget
+        // Double-click to toggle minimize/expand the widget
         $widget.on('dblclick', function () {
             const isMinimized = $widget.hasClass('minimized');
             if (isMinimized) {
@@ -75,106 +73,86 @@
         });
 
         // Form submit handler to call API
-        $submitBtn.click(function (e) {
+        $submitBtn.click(async function (e) {
             e.preventDefault();
 
+            // Collect form data
             const formData = {
-                individual_first_name: $firstName.val(),
-                individual_last_name: $lastName.val(),
+                state: $state.val(),
+                vehicleYear: $vehicleYear.val(),
                 vehicleMake: $vehicleMake.val(),
                 vehicleModel: $vehicleModel.val(),
-                statedAmount: $statedAmount.val(),
                 annualMileage: $annualMileage.val(),
             };
 
             // Prepare the payload for the API request
             const payload = {
-                policy_number: null,
-                policy_status: null,
-                is_quote: true,
-                incept_date: "0001-01-01T00:00:00",
-                minimum_earned_premium: 0.0,
-                full_term_premium: 0.0,
-                written_premium: 0.0,
-                net_change_premium: 0.0,
-                full_term_pol_premium: 0.0,
-                written_pol_premium: 0.0,
-                net_change_pol_premium: 0.0,
-                full_term_pol_tax: 0.0,
-                written_pol_tax: 0.0,
-                net_change_pol_tax: 0.0,
-                full_term_pol_fee: 0.0,
-                written_pol_fee: 0.0,
-                net_change_pol_fee: 0.0,
-                full_term_pol_total: 0.0,
-                written_pol_total: 0.0,
-                net_change_pol_total: 0.0,
-                billing_party: "",
-                risk_state: "PA",
-                marketing_code: "GA",
-                origination_source: "IPAD-GG Southwest Na",
-                department: "ACI",
-                territory_code: null,
-                settlement_type: null,
-                effective_date: "2021-11-17T10:34:06.900194",
-                expiration_date: "2022-11-17T10:34:06.900194",
-                existing_renewal: false,
-                insured: {
-                    full_name: `${formData.individual_first_name} ${formData.individual_last_name}`,
-                    individual_first_name: formData.individual_first_name,
-                    individual_last_name: formData.individual_last_name,
-                    phone_number: "8888888888",
-                    email_address: "None@nsminc.com",
-                    mailing_address: {
-                        city: "KING OF PRUSSIA",
-                        state: "PA",
-                        zip: "19406",
-                    },
-                },
-                lines: [
+                "risk_state": formData.state,
+                "department": "ACI",
+                "insured": {},
+                "lines": [
                     {
-                        line_number: 1,
-                        line_code: "AUTO",
+                        "line_number": 1,
+                        "full_term_premium": 0.0,
+                        "line_code": "AUTO",
+                        "program_code": "COLLAUTO",
+                        "agency": {
+                            "invoice_suspend_method": null,
+                            "send_statement_ind": null,
+                            "agency_identifier": "DDAB728D-26B5-4230-812D-F3359ECA17CC"
+                        },
+                        "carriers": [
+                            {
+                                "participation_percentage": 100.0,
+                                "principle_carrier": false,
+                                "code": "AMIG"
+                            }
+                        ],
                         vehicles: [
                             {
+                                veh_year: formData.vehicleYear,
                                 veh_make: formData.vehicleMake,
                                 veh_model: formData.vehicleModel,
-                                stated_amount: formData.statedAmount,
-                                annual_mileage: formData.annualMileage,
+                                annual_mileage: formData.annualMileage+" Miles",
                             }
                         ]
                     }
                 ]
             };
 
-            // Send the API request
-            $.ajax({
-                url: settings.apiUrl,
-                method: 'PUT',
-                headers: {
-                    "authentication_key": "c21506140ca2e90e4b947aea364fb2b234d206c4462fa36594365ce5d488da14"
-                },
-                contentType: "application/json",
-                data: JSON.stringify(payload),
-                success: function (response) {
-                    const premium = response.full_term_premium;  // Adjust based on your API response structure
-                    if (premium) {
-                        $quoteInfo.html(`Full Term Premium: $${premium}`);
-                        const $quoteButton = $('<button>', {
-                            text: 'Get Full Quote',
-                            click: function () {
-                                window.location.href = settings.quotePortalUrl;
-                            }
-                        });
-                        $quoteInfo.append($quoteButton);
-                    } else {
-                        $quoteInfo.html('Error fetching quote.');
-                    }
-                },
-                error: function () {
-                    $quoteInfo.html('There was an error fetching the quote.');
+            // API Request using fetch
+            try {
+                const response = await fetch(settings.apiUrl, {
+                    method: 'PUT',
+                    headers: {
+                        "Content-Type": "application/json",
+                        "authentication_key": "c21506140ca2e90e4b947aea364fb2b234d206c4462fa36594365ce5d488da14"
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
                 }
-            });
+
+                const data = await response.json();
+                const premium = data.full_term_premium;  // Adjust based on your API response structure
+                if (premium) {
+                    $quoteInfo.html(`Full Term Premium: $${premium}`);
+                    const $quoteButton = $('<button>', {
+                        text: 'Get Full Quote',
+                        click: function () {
+                            window.location.href = settings.quotePortalUrl;
+                        }
+                    });
+                    $quoteInfo.append($quoteButton);
+                } else {
+                    $quoteInfo.html('Error fetching quote.');
+                }
+            } catch (error) {
+                $quoteInfo.html('There was an error fetching the quote.');
+                console.error("Fetch error:", error);
+            }
         });
     };
 

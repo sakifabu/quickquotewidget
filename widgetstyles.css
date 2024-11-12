@@ -1,2 +1,53 @@
-body {
+/* Background styling for the widget */
+.quickquote-widget {
+    background-image: url("https://path-to-your-background-image.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 15px;
+    padding: 20px;
+    color: #ffffff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
+
+    /* Optional: Add an overlay for readability */
+    .quickquote-widget::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5); /* Adjust opacity as needed */
+        border-radius: 15px;
+        z-index: 0;
+    }
+
+    .quickquote-widget * {
+        position: relative;
+        z-index: 1; /* Ensures elements appear above the overlay */
+    }
+
+    /* Style for the main buttons */
+    .quickquote-widget button {
+        background-color: #d32f2f;
+        color: #ffffff;
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+        font-weight: bold;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s, box-shadow 0.3s;
+        width: 100%;
+        margin-top: 10px;
+    }
+
+        .quickquote-widget button:hover {
+            background-color: #b71c1c;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
