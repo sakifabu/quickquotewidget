@@ -77,12 +77,9 @@
                 });
             }
         });
-
-        // Form submit handler to call API
         $submitBtn.click(async function (e) {
             e.preventDefault();
 
-            // Collect form data
             const formData = {
                 state: $state.val(),
                 vehicleYear: $vehicleYear.val(),
@@ -142,9 +139,11 @@
                 }
 
                 const data = await response.json();
-                const premium = data.full_term_premium;  // Adjust based on your API response structure
-                if (premium) {
-                    $quoteInfo.html(`Full Term Premium: $${premium}`);
+                const fullTermPremium = data.full_term_premium;  // Access the full_term_premium from the response
+
+                // Display the full_term_premium in the widget
+                if (fullTermPremium !== undefined) {
+                    $quoteInfo.html(`Full Term Premium: $${fullTermPremium.toFixed(2)}`);
                     const $quoteButton = $('<button>', {
                         text: 'Get Full Quote',
                         click: function () {
@@ -153,7 +152,7 @@
                     });
                     $quoteInfo.append($quoteButton);
                 } else {
-                    $quoteInfo.html('Error fetching quote.');
+                    $quoteInfo.html('Error fetching full term premium.');
                 }
             } catch (error) {
                 $quoteInfo.html('There was an error fetching the quote.');
