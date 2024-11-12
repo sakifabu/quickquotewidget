@@ -22,14 +22,13 @@
             boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
             zIndex: 1000,
             backgroundColor: "#fff",
-            minimizedHeight: "40px",
+            minimizedSize: "10px",
             animationDuration: "0.3s",
         }, options);
 
         const $element = $(selector);
         const $widget = $('<div>', { class: 'quickquote-widget' });
 
-        // Dynamic Form Inputs
         const $form = $('<form>');
         const $state = $('<input>', { type: 'text', placeholder: 'State (e.g., PA)', name: 'state' });
         const $vehicleYear = $('<input>', { type: 'number', placeholder: 'Vehicle Year', name: 'vehicleYear' });
@@ -41,7 +40,6 @@
         $form.append($state, $vehicleYear, $vehicleMake, $vehicleModel, $annualMileage, $submitBtn);
         const $quoteInfo = $('<div>', { class: 'quote-info' });
 
-        // Widget Styling
         $widget.css({
             position: settings.position,
             bottom: settings.bottom,
@@ -71,8 +69,8 @@
                 });
             } else {
                 $widget.addClass('minimized').css({
-                    width: settings.minimizedWidth,
-                    height: settings.minimizedHeight,
+                    width: settings.minimizedSize,
+                    height: settings.minimizedSize,
                     borderRadius: "50%", 
                 });
             }
@@ -88,7 +86,6 @@
                 annualMileage: $annualMileage.val(),
             };
 
-            // Prepare the payload for the API request
             const payload = {
                 "risk_state": formData.state,
                 "department": "ACI",
@@ -123,7 +120,6 @@
                 ]
             };
 
-            // API Request using fetch
             try {
                 const response = await fetch(settings.apiUrl, {
                     method: 'PUT',
@@ -133,8 +129,6 @@
                     },
                     body: JSON.stringify(payload)
                 });
-
-                // Log the status and response if not OK
                 if (!response.ok) {
                     console.error("HTTP error:", response.status, response.statusText);
                     $quoteInfo.html(`Error fetching quote. Status: ${response.status} ${response.statusText}`);
@@ -142,9 +136,9 @@
                 }
 
                 const data = await response.json();
-                console.log("API Response Data:", data); // Log the full response data
+                console.log("API Response Data:", data);
 
-                const fullTermPremium = data.full_term_premium; // Access the full_term_premium from the response
+                const fullTermPremium = data.full_term_premium;
 
                 if (fullTermPremium !== undefined) {
                     $quoteInfo.html(`Full Term Premium: $${fullTermPremium.toFixed(2)}`);
@@ -152,7 +146,7 @@
                     $quoteInfo.html('Error fetching full term premium.');
                 }
             } catch (error) {
-                console.error("Fetch error:", error); // Log any network or parsing errors
+                console.error("Fetch error:", error);
                 $quoteInfo.html('There was an error fetching the quote.');
             }
         });
